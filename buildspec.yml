@@ -27,11 +27,16 @@ phases:
       - go get -u golang.org/x/lint/golint
       #- go get -u https://github.com/golang/lint
 
-      # - wget https://storage.googleapis.com/golang/go${GO_VERSION}.linux-amd64.tar.gz
-      # - tar -C /usr/local -xzf go${GO_VERSION}.linux-amd64.tar.gz
-      # - export PATH="/usr/local/go/bin:$PATH" && export GOPATH="$HOME/go" && export PATH="$GOPATH/bin:$PATH"      
+      # install govulncheck to scan code
+      - echo install govulncheck
+      - go install golang.org/x/vuln/cmd/govulncheck@latest   
+      #- cp $GOPATH/bin/govulncheck /usr/local/bin/
+      - workdir=`pwd`
+      - echo $workdir
+      - ls -la  
 
   pre_build: 
+    on-failure: CONTINUE
     commands:
 
       # Make sure we're in the project directory within our GOPATH
@@ -48,6 +53,26 @@ phases:
 
       # Run all tests included with our application
       - go test .
+
+      # Vulnerability detection using govulncheck
+      #- govulncheck
+      - which govulncheck
+      #- .$GOPATH/bin/govulncheck ./...
+      - echo trying to execute govulncheck on project
+      #- .$GOPATH/bin/govulncheck -json ./...
+      #- govulncheck -json ./...
+      #- cd $GOPATH/bin      
+      #- pwd
+      #- ls -la
+      - currentphase="govulncheck"
+      # with -json option gave exit code 137 -> out of memory!
+      - govulncheck -json ./...      
+      - echo after govulncheck...
+      #- cd $workdir      
+      - pwd
+      - ls -la        
+    finally:
+      - echo will continue process even if there are errors.      
 
   build:
     commands:
