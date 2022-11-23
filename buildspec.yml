@@ -24,7 +24,8 @@ phases:
 
       # Install golint
       #- go get -u github.com/golang/lint/golint
-      - go get -u https://github.com/golang/lint
+      - go get -u golang.org/x/lint/golint
+      #- go get -u https://github.com/golang/lint
 
       # - wget https://storage.googleapis.com/golang/go${GO_VERSION}.linux-amd64.tar.gz
       # - tar -C /usr/local -xzf go${GO_VERSION}.linux-amd64.tar.gz
