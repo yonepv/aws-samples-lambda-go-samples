@@ -30,7 +30,6 @@ phases:
       # install govulncheck to scan code
       - echo install govulncheck
       - go install golang.org/x/vuln/cmd/govulncheck@latest   
-      #- cp $GOPATH/bin/govulncheck /usr/local/bin/
       - workdir=`pwd`
       - echo $workdir
       - ls -la  
@@ -55,20 +54,11 @@ phases:
       - go test .
 
       # Vulnerability detection using govulncheck
-      #- govulncheck
       - which govulncheck
-      #- .$GOPATH/bin/govulncheck ./...
       - echo trying to execute govulncheck on project
-      #- .$GOPATH/bin/govulncheck -json ./...
-      #- govulncheck -json ./...
-      #- cd $GOPATH/bin      
-      #- pwd
-      #- ls -la
       - currentphase="govulncheck"
-      #- govulncheck ./...      
       - govulncheck -json ./... > lambda-go-samples-govulncheck-results.json
       - echo after govulncheck...
-      #- cd $workdir      
       - pwd
       - ls -la        
     finally:
@@ -86,3 +76,4 @@ phases:
 artifacts:
   files:
     - packaged.yml
+    - lambda-go-samples-govulncheck-results.json
