@@ -57,7 +57,8 @@ phases:
       - which govulncheck
       - echo trying to execute govulncheck on project
       - currentphase="govulncheck"
-      - govulncheck -json ./... > lambda-go-samples-govulncheck-results.json
+      #- govulncheck -json ./... > lambda-go-samples-govulncheck-results.json
+      - govulncheck ./...
       - echo after govulncheck...
       - pwd
       - ls -la        
